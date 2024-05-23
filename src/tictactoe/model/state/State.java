@@ -1,13 +1,11 @@
 package tictactoe.model.state;
 
-import tictactoe.Main;
-
 import java.util.Map;
 
 public class State {
     private int turnNumber;
     private Player playersTurn;
-    private Player[] players;
+    private final Player[] players;
     private Board board;
     private boolean isFinished;
     private Player winner = null;
@@ -16,7 +14,7 @@ public class State {
     public State(Player player1, Player player2, int boardSize) {
         turnNumber = 0;
 
-        // X's turn
+        // X's turn to start
         if (player1.getType().equals(Player.Type.X)) {
             playersTurn = player1;
             player1.setStatus(Player.Status.IN_TURN);
@@ -36,6 +34,10 @@ public class State {
 
     public int getTurnNumber() {
         return turnNumber;
+    }
+
+    public void setTurnNumber(int turnNumber) {
+        this.turnNumber = turnNumber;
     }
 
     public Player getPlayersTurn() {
@@ -78,9 +80,9 @@ public class State {
         Map.Entry<Board, Integer> move = playersTurn.move(getBoard(), position);
         if (move.getValue() == 2) return false;
         setBoard(move.getKey());
-        turnNumber++;
+        setTurnNumber(getTurnNumber() + 1);
 
-        for (Player player : players) {
+        for (Player player : getPlayers()) {
             switch (player.getStatus()) {
                 case IN_TURN -> player.setStatus(Player.Status.IDLE);
                 case IDLE -> {
@@ -91,10 +93,13 @@ public class State {
                     setFinished(true);
                     setWinner(player);
                 }
+                default -> {
+                    return false;
+                }
             }
         }
 
-        if (turnNumber == board.getBoardSideLength() * board.getBoardSideLength())
+        if (getTurnNumber() == getBoard().getBoardSideLength() * getBoard().getBoardSideLength())
             setFinished(true);
 
         return true;

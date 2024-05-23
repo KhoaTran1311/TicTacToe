@@ -5,7 +5,6 @@ import java.util.*;
 public class Player {
     public enum Status {
         WON,
-        LOST,
         DRAW,
         IN_TURN,
         IDLE
