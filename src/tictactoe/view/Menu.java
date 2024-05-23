@@ -7,15 +7,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
-    public static void endGame(Player player1, Player player2) {
-        if (player1.getStatus().equals(Player.Status.WON)) {
-            System.out.println("X won!");
-        } else if (player2.getStatus().equals(Player.Status.WON)) {
-            System.out.println("O won!");
-        } else {
-            System.out.println("It's a tie!");
-        }
-    }
+    private Menu() {}
 
     public static void endGame(Player winner) {
         if (winner == null) {
