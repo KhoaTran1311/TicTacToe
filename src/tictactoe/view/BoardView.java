@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BoardView {
+    private BoardView() {
+    }
+
     public static void getView(Board board) {
         int[][] boardState = board.getState();
         int boardSide = board.getBoardSideLength();
@@ -40,14 +43,13 @@ public class BoardView {
                 rowStrings[2] += boxView.getLines()[2];
             }
             if (i % boardSide == boardSide - 1) {
-                for (int j = 0; j < 3; j++) {
-                    stringRepresentation[i/ boardSide * 3 + j] = rowStrings[j];
-                }
+                System.arraycopy(rowStrings, 0, stringRepresentation, i / boardSide * 3, 3);
                 rowStrings = new String[3];
                 Arrays.fill(rowStrings, "");
-                currRow ++;
+                currRow++;
             }
         }
+
         for (int i = 0; i < boardSide * 3; i++) {
             System.out.println(stringRepresentation[i]);
         }
