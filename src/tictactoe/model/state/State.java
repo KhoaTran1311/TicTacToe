@@ -13,7 +13,7 @@ public class State {
     private Player winner = null;
 
     // init
-    public State(Player player1, Player player2) {
+    public State(Player player1, Player player2, int boardSize) {
         turnNumber = 0;
 
         // X's turn
@@ -31,7 +31,7 @@ public class State {
 
         isFinished = false;
 
-        board = new Board(10);
+        board = new Board(boardSize);
     }
 
     public int getTurnNumber() {

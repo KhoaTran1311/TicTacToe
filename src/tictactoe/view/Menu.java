@@ -19,7 +19,12 @@ public class Menu {
 
     public static void endGame(Player winner) {
         if (winner == null) {
-            System.out.println("It's a tie!");
+            System.out.println("""
+                        
+                    ╦┌┬┐┌─┐  ┌─┐  ┌┬┐╦┌─┐┬
+                    ║ │ └─┐  ├─┤   │ ║├┤ │
+                    ╩ ┴ └─┘  ┴ ┴   ┴ ╩└─┘o
+                    """);
             return;
         }
 
@@ -35,8 +40,23 @@ public class Menu {
                 "        *");
     }
 
-    public static void startGame(Player player1, Player player2) {
-        System.out.println("Welcome!");
+    public static int startGame() {
+        System.out.println(
+                """
+                        ╦ ╦┌─┐╦  ┌─┐┌─┐┌┬┐╔═╗┬
+                        ║║║├┤ ║  │  │ ││││║╣ │
+                        ╚╩╝└─┘╩═╝└─┘└─┘┴ ┴╚═╝o""");
+        System.out.println("--- Choose board size (enter a number between 3 and 10): ");
+        Scanner scanner = new Scanner(System.in);
+        try {
+            int boardSize = scanner.nextInt();
+            if (boardSize >= 3 && boardSize <= 10) return boardSize;
+        } catch (InputMismatchException e) {
+            System.err.println("!!!!!!Invalid board size number. Using default board size 3!!!!!!");
+            return 3;
+        }
+        System.err.println("!!!!!!Invalid board size number. Using default board size 3!!!!!!");
+        return 3;
     }
 
     public static void inGame(State state) {
@@ -46,9 +66,10 @@ public class Menu {
         try {
             int nextPlay = scanner.nextInt();
             int boardSize = state.getBoard().getBoardSideLength() * state.getBoard().getBoardSideLength();
-            if (nextPlay < 1 || nextPlay > boardSize || !state.play(nextPlay)) System.out.println("!!!!!!Enter a valid position!!!!!!");
+            if (nextPlay < 1 || nextPlay > boardSize || !state.play(nextPlay))
+                System.err.println("!!!!!!Enter a valid position!!!!!!");
         } catch (InputMismatchException e) {
-            System.out.println("!!!!!!Enter a valid position!!!!!!");
+            System.err.println("!!!!!!Enter a valid position!!!!!!");
         }
     }
 }
