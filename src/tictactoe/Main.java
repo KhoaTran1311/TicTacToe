@@ -10,17 +10,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        BoardView boardView = new BoardView(new int[][]{{0, 1, 2}, {1, 2, 0}, {2, 0, 1}});
-//        BoardView boardView = new BoardView();
-
-        Player player1 = new Player(1, Player.Type.X);
-        Player player2 = new Player(2, Player.Type.O);
-
-
+        Player player1 = new Player(Player.Type.X);
+        Player player2 = new Player(Player.Type.O);
 
         State state = new State(player1, player2, Menu.startGame());
         BoardView.getView(state.getBoard());
-
 
         while (!state.isFinished()) {
             Menu.inGame(state);

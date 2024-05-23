@@ -15,18 +15,10 @@ public class Player {
         O
     }
 
-    private int id;
     private Status status;
     private final Type type;
 
-    public Player(int id, Type type, Status status) {
-        this.id = id;
-        this.status = status;
-        this.type = type;
-    }
-
-    public Player(int id, Type type) {
-        this.id = id;
+    public Player(Type type) {
         this.type = type;
         this.status = Status.IDLE;
     }
@@ -41,10 +33,6 @@ public class Player {
 
     public Type getType() {
         return type;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public Map.Entry<Board, Integer> move(Board board, int position) {
