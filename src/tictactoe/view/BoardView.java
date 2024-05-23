@@ -32,7 +32,7 @@ public class BoardView {
         String[] rowStrings = new String[3];
         Arrays.fill(rowStrings, "");
         for (int i = 0; i < boardSize; i++) {
-            BoxView boxView = new BoxView(boardList.get(i), i);
+            BoxView boxView = new BoxView(boardList.get(i), i, boardSide);
 
             if (i / boardSide == currRow) {
                 rowStrings[0] += boxView.getLines()[0];
@@ -41,14 +41,14 @@ public class BoardView {
             }
             if (i % boardSide == boardSide - 1) {
                 for (int j = 0; j < 3; j++) {
-                    stringRepresentation[i - (boardSide - 1 - j)] = rowStrings[j];
+                    stringRepresentation[i/ boardSide * 3 + j] = rowStrings[j];
                 }
                 rowStrings = new String[3];
                 Arrays.fill(rowStrings, "");
                 currRow ++;
             }
         }
-        for (int i = 0; i < boardSize; i++) {
+        for (int i = 0; i < boardSide * 3; i++) {
             System.out.println(stringRepresentation[i]);
         }
     }

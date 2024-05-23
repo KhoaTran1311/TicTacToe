@@ -45,7 +45,8 @@ public class Menu {
         System.out.println("--- Choose a position on the board: ");
         try {
             int nextPlay = scanner.nextInt();
-            if (nextPlay < 1 || nextPlay > 9 || !state.play(nextPlay)) System.out.println("!!!!!!Enter a valid position!!!!!!");
+            int boardSize = state.getBoard().getBoardSideLength() * state.getBoard().getBoardSideLength();
+            if (nextPlay < 1 || nextPlay > boardSize || !state.play(nextPlay)) System.out.println("!!!!!!Enter a valid position!!!!!!");
         } catch (InputMismatchException e) {
             System.out.println("!!!!!!Enter a valid position!!!!!!");
         }

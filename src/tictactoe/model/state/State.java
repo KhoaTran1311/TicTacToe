@@ -31,7 +31,7 @@ public class State {
 
         isFinished = false;
 
-        board = new Board();
+        board = new Board(10);
     }
 
     public int getTurnNumber() {
