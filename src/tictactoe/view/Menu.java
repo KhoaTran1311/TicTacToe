@@ -58,7 +58,10 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
         try {
             int boardSize = scanner.nextInt();
-            if (boardSize >= 3 && boardSize <= 10) return boardSize;
+            if (boardSize >= 3 && boardSize <= 10) {
+                System.out.println("First one get to " + Math.min(boardSize, 5) + " wins!");
+                return boardSize;
+            }
         } catch (InputMismatchException e) {
             System.err.println("!!!!!!Invalid board size number. Using default board size 3!!!!!!");
             return 3;

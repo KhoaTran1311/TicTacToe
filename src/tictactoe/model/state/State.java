@@ -32,6 +32,11 @@ public class State {
         board = new Board(boardSize);
     }
 
+    // default
+    public State(Player player1, Player player2) {
+        this(player1, player2, 3);
+    }
+
     public int getTurnNumber() {
         return turnNumber;
     }

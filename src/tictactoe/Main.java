@@ -1,12 +1,10 @@
 package tictactoe;
 
 import tictactoe.model.state.Player;
-import tictactoe.model.state.Board;
 import tictactoe.model.state.State;
 import tictactoe.view.BoardView;
 import tictactoe.view.Menu;
 
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {

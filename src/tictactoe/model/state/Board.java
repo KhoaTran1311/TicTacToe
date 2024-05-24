@@ -3,7 +3,7 @@ package tictactoe.model.state;
 import java.util.Arrays;
 
 public class Board {
-    private final int[][] state;
+    private int[][] state;
     private final int boardSideLength;
 
     public Board() {
@@ -32,64 +32,88 @@ public class Board {
     // 1: won
     // 2: error
     public int move(int x, int y, int player) {
-        if (state[x][y] == 0) {
-            state[x][y] = player;
+        if (getState()[x][y] == 0) {
+            int[][] copiedState = new int[getBoardSideLength()][getBoardSideLength()];
+            for (int i = 0; i < getBoardSideLength(); i++) {
+                System.arraycopy(getState()[i], 0, copiedState[i], 0, getBoardSideLength());
+            }
+            copiedState[x][y] = player;
+            setState(copiedState);
         } else {
             return 2;
         }
 
-        boolean colWon = true;
-        boolean rowWon = true;
-        boolean diagonalWon = true;
-
         // column check
-        for (int i = 0; i < boardSideLength; i++) {
-            if (state[i][y] != player) {
-                colWon = false;
-                break;
-            }
-        }
+        if (columnCheck(x, player, x, y) == Math.min(5, getBoardSideLength())) return 1;
 
         // row check
-        for (int i = 0; i < boardSideLength; i++) {
-            if (state[x][i] != player) {
-                rowWon = false;
-                break;
-            }
-        }
+        if (rowCheck(y, player, x, y) == Math.min(5, getBoardSideLength())) return 1;
 
         // diagonal check
-        int position = x * boardSideLength + y;
-        int boardSize = boardSideLength * boardSideLength;
-        if (position % (boardSideLength + 1) != 0 && position % (boardSideLength - 1) != 0) {
-            diagonalWon = false;
-        }
-        else if (position % (boardSideLength + 1) == 0) {
-            for (int i = 0; i < boardSize; i += (boardSideLength + 1)) {
-                int temp = i / boardSideLength;
-                if (state[temp][temp] != player) {
-                    diagonalWon = false;
-                    break;
-                }
-            }
-        }
-        else {
-            for (int i = boardSideLength - 1; i < boardSize - 1; i += (boardSideLength - 1)) {
-                int temp = i / boardSideLength;
-                if (state[temp][i % boardSideLength] != player) {
-                    diagonalWon = false;
-                    break;
-                }
-            }
+        if (diagonalCheck(x, y, player, x, y) == Math.min(5, getBoardSideLength())) return 1;
+
+        return 0;
+    }
+
+    private int columnCheck(int x, int player, int originalX, int originalY) {
+        if (x < 0 || x > getBoardSideLength() - 1 || getState()[x][originalY] != player) {
+            return 0;
         }
 
-        return rowWon || colWon || diagonalWon ? 1 : 0;
+        if (originalX < x) {
+            return 1 + columnCheck(x + 1, player, originalX, originalY);
+        } else if (originalX > x) {
+            return 1 + columnCheck(x - 1, player, originalX, originalY);
+        }
+
+        return 1 +
+                columnCheck(x + 1, player, originalX, originalY) +
+                columnCheck(x - 1, player, originalX, originalY);
+    }
+
+    private int rowCheck(int y, int player, int originalX, int originalY) {
+        if (y < 0 || y > getBoardSideLength() - 1 || getState()[originalX][y] != player) {
+            return 0;
+        }
+
+        if (originalY < y) {
+            return 1 + rowCheck(y + 1, player, originalX, originalY);
+        } else if (originalY > y) {
+            return 1 + rowCheck(y - 1, player, originalX, originalY);
+        }
+
+        return 1 +
+                rowCheck(y + 1, player, originalX, originalY) +
+                rowCheck(y - 1, player, originalX, originalY);
+    }
+
+    private int diagonalCheck(int x, int y, int player, int originalX, int originalY) {
+        if (x < 0 || x > getBoardSideLength() - 1 || y < 0 || y > getBoardSideLength() - 1 || getState()[x][y] != player) {
+            return 0;
+        }
+
+        if (x != originalX || y != originalY) {
+            if (originalX < x && originalY < y) {
+                return 1 + diagonalCheck(x + 1, y + 1, player, originalX, originalY); // SE
+            } else if (originalX > x && originalY > y) {
+                return 1 + diagonalCheck(x - 1, y - 1, player, originalX, originalY); // NW
+            } else if (originalX < x && originalY > y) {
+                return 1 + diagonalCheck(x + 1, y - 1, player, originalX, originalY); // SW
+            }
+            return 1 + diagonalCheck(x - 1, y + 1, player, originalX, originalY); // NE
+        }
+
+        return 1 + Math.max(
+                (diagonalCheck(x + 1, y + 1, player, originalX, originalY) +
+                        diagonalCheck(x - 1, y - 1, player, originalX, originalY)), // NW-SE diagonal
+                (diagonalCheck(x + 1, y - 1, player, originalX, originalY) +
+                        diagonalCheck(x - 1, y + 1, player, originalX, originalY))); // NE-SW diagonal
     }
 
     public boolean isFull() {
-        for (int i = 0; i < boardSideLength; i++) {
-            for (int j = 0; j < boardSideLength; j++) {
-                if (state[i][j] == 0) return false;
+        for (int i = 0; i < getBoardSideLength(); i++) {
+            for (int j = 0; j < getBoardSideLength(); j++) {
+                if (getState()[i][j] == 0) return false;
             }
         }
         return true;
@@ -97,6 +121,10 @@ public class Board {
 
     public int[][] getState() {
         return state;
+    }
+
+    public void setState(int[][] state) {
+        this.state = state;
     }
 
     public int getBoardSideLength() {
