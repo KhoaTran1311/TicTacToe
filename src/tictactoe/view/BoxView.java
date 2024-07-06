@@ -60,8 +60,8 @@ public class BoxView {
 
     /**
      * set the empty space to be rendered
-     * @param value
-     * @param linesSb
+     * @param value numbers
+     * @param linesSb the lines to be renders
      */
     private void setBlankFirstLines(String value, StringBuilder[] linesSb) {
         linesSb[0].append("       ");
@@ -72,7 +72,7 @@ public class BoxView {
 
     /**
      * set the vertical border to be rendered
-     * @param linesSb
+     * @param linesSb the lines to be rendered
      */
     private void setVerticalBorder(StringBuilder[] linesSb) {
         if (position % boardSide == 0) {
