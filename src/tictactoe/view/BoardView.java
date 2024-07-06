@@ -1,17 +1,27 @@
 package tictactoe.view;
 
 import tictactoe.model.state.Board;
+import tictactoe.model.state.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+/**
+ * The type Board view.
+ */
 public class BoardView {
     private BoardView() {
     }
 
+    /**
+     * Gets view.
+     *
+     * @param board the board
+     */
     public static void getView(Board board) {
-        int[][] boardState = board.getState();
+        Player.Type[][] boardState = board.getBoardState();
         int boardSide = board.getBoardSideLength();
         int boardSize = boardSide * boardSide;
         List<String> boardList = new ArrayList<>(boardSize);
@@ -20,12 +30,10 @@ public class BoardView {
         int counter = 1;
         for (int i = 0; i < boardSide; i++) {
             for (int j = 0; j < boardSide; j++) {
-                if (boardState[i][j] == 1) {
-                    boardList.add("x");
-                } else if (boardState[i][j] == 2) {
-                    boardList.add("o");
-                } else {
+                if (boardState[i][j] == null) {
                     boardList.add(String.valueOf(counter));
+                } else {
+                    boardList.add(boardState[i][j].toString());
                 }
                 counter++;
             }

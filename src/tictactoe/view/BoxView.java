@@ -1,10 +1,20 @@
 package tictactoe.view;
 
+/**
+ * The type Box view.
+ */
 public class BoxView {
     private final String[] lines = new String[3];
     private final int position;
     private final int boardSide;
 
+    /**
+     * Instantiates a new Box view.
+     *
+     * @param value     the value
+     * @param position  the position
+     * @param boardSide the board side
+     */
     public BoxView(String value, int position, int boardSide) {
         boolean isBlank = Character.isDigit(value.charAt(0));
 
@@ -23,7 +33,7 @@ public class BoxView {
             } else {
                 linesSb[2].append("       ");
             }
-        } else if (value.equals("x")) {
+        } else if (value.equals("X")) {
             linesSb[0].append("  ┏┓┏┓ ");
             linesSb[1].append("   ┃┃  ");
             if (position < boardSize - boardSide) {
@@ -48,6 +58,11 @@ public class BoxView {
         lines[2] = linesSb[2].toString();
     }
 
+    /**
+     * set the empty space to be rendered
+     * @param value
+     * @param linesSb
+     */
     private void setBlankFirstLines(String value, StringBuilder[] linesSb) {
         linesSb[0].append("       ");
         linesSb[1].append("   ").append(value).append("   ");
@@ -55,6 +70,10 @@ public class BoxView {
         if (Integer.parseInt(value) >= 100) linesSb[1].deleteCharAt(1);
     }
 
+    /**
+     * set the vertical border to be rendered
+     * @param linesSb
+     */
     private void setVerticalBorder(StringBuilder[] linesSb) {
         if (position % boardSide == 0) {
             linesSb[0].append("|");
@@ -67,6 +86,11 @@ public class BoxView {
         }
     }
 
+    /**
+     * Get lines.
+     *
+     * @return the lines to be rendered
+     */
     public String[] getLines() {
         return lines;
     }
