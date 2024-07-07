@@ -1,7 +1,5 @@
 package tictactoe.model.state;
 
-import tictactoe.utils.BoardUtils;
-
 import java.util.*;
 
 
@@ -14,7 +12,6 @@ public class Board {
 
     private Player.Type[][] boardState; // current board boardState(this represents the players' positions and empty cells)
     private final int boardSideLength; // length of the board
-    private Set<Integer> emptyPositions; // the set of empty positions
     private final int boardSize; // the total number of boxes in the board
 
 //---------------------------------------CONSTRUCTORS-------------------------------------------------
@@ -37,11 +34,6 @@ public class Board {
         this.boardSideLength = boardSideLength;
         boardState = new Player.Type[boardSideLength][boardSideLength];
         boardSize = boardSideLength * boardSideLength;
-
-        emptyPositions = new HashSet<>();
-        for (int i = 1; i <= boardSize; i++) {
-            emptyPositions.add(i);
-        }
     }
 
     /**
@@ -59,21 +51,10 @@ public class Board {
             System.arraycopy(board.boardState[i], 0, copiedState[i], 0, boardSideLength);
         }
 
-        this.emptyPositions = new HashSet<>(board.getEmptyPositions());
-
         this.boardState = copiedState;
     }
 
 //--------------------------------GETTERS & SETTERS--------------------------------------------------------
-
-    /**
-     * Is full boolean.
-     *
-     * @return the boolean
-     */
-    public boolean isFull() {
-        return getEmptyPositions().isEmpty();
-    }
 
     /**
      * Gets board size – which is the area of the board.
@@ -82,24 +63,6 @@ public class Board {
      */
     public int getBoardSize() {
         return boardSize;
-    }
-
-    /**
-     * Gets empty positions.
-     *
-     * @return the empty positions
-     */
-    public Set<Integer> getEmptyPositions() {
-        return emptyPositions;
-    }
-
-    /**
-     * Sets empty positions.
-     *
-     * @param emptyPositions the empty positions
-     */
-    public void setEmptyPositions(Set<Integer> emptyPositions) {
-        this.emptyPositions = emptyPositions;
     }
 
     /**
@@ -150,7 +113,6 @@ public class Board {
         }
 
         setBoardState(updatedBoardStateOnMove(x, y, playerType));
-        setEmptyPositions(updatedEmptyPositionsOnMove(x, y));
 
         // column check
         if (columnCheck(x, playerType, x, y) == Math.min(5, getBoardSideLength())) return 1; // won
@@ -183,19 +145,6 @@ public class Board {
         copiedBoardState[x][y] = playerType;
 
         return copiedBoardState;
-    }
-
-    /**
-     * Helper – Update the empty position after a player move
-     * @param x x-position
-     * @param y y-position
-     * @return the new set of empty position
-     */
-    private Set<Integer> updatedEmptyPositionsOnMove(int x, int y) {
-        Set<Integer> copiedSet = new HashSet<>(getEmptyPositions());
-        copiedSet.remove(BoardUtils.coordinateToPosition(x, y, getBoardSideLength()));
-
-        return copiedSet;
     }
 
     /**

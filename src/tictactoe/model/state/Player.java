@@ -19,10 +19,6 @@ public class Player {
          */
         WON,
         /**
-         * Draw status.
-         */
-        DRAW,
-        /**
          * In turn status.
          */
         IN_TURN,
@@ -106,8 +102,7 @@ public class Player {
 
         int result = boardCopy.move(coordinates[0], coordinates[1], getType());
 
-        if (board.isFull()) status = Status.DRAW;
-        if (result == 1) status = Status.WON;
+        if (result == 1) setStatus(Status.WON);
 
         return new AbstractMap.SimpleEntry<>(boardCopy, result);
     }

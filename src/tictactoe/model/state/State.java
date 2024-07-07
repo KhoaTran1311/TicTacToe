@@ -160,6 +160,10 @@ public class State {
     }
 
 //-------------------------------------------------FUNCTIONS-----------------------------------------------------
+    private boolean isBoardFull() {
+        return getTurnNumber() == getBoard().getBoardSize();
+    }
+
 
     /**
      * Play update the player and the board after a play
@@ -198,7 +202,7 @@ public class State {
         }
 
         // draw
-        if (board.isFull())
+        if (isBoardFull())
             setFinished(true);
 
         return true;
