@@ -46,6 +46,7 @@ public class Player {
 
     private Status status;
     private final Type type;
+    private final boolean isBot;
 
 //---------------------------------------------------CONSTRUCTORS-------------------------------------------------
 
@@ -57,6 +58,13 @@ public class Player {
     public Player(Type type) {
         this.type = type;
         this.status = Status.IDLE;
+        this.isBot = false;
+    }
+
+    public Player(Type type, boolean isBot) {
+        this.type = type;
+        this.status = Status.IDLE;
+        this.isBot = isBot;
     }
 
 //-----------------------------------------------GETTERS & SETTERS-----------------------------------------------
@@ -88,7 +96,11 @@ public class Player {
         return type;
     }
 
-//---------------------------------------------------FUNCTIONS-----------------------------------------------------
+    public boolean isBot() {
+        return isBot;
+    }
+
+    //---------------------------------------------------FUNCTIONS-----------------------------------------------------
 
     /**
      * Move the player to a new position
@@ -105,5 +117,17 @@ public class Player {
         if (result == 1) setStatus(Status.WON);
 
         return new AbstractMap.SimpleEntry<>(boardCopy, result);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player player)) return false;
+        return getType() == player.getType();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getType());
     }
 }

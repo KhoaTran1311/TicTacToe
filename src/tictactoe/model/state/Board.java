@@ -231,9 +231,10 @@ public class Board {
 
     @Override
     public String toString() {
-        return "BoardUtils{\n" +
+        return "Board{\n" +
                 "  " + Arrays.toString(boardState[0]) + "\n" +
                 "  " + Arrays.toString(boardState[1]) + "\n" +
+                "  " + Arrays.toString(boardState[2]) + "\n" +
                 '}';
     }
 }

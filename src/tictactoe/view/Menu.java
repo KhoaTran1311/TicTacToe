@@ -18,7 +18,7 @@ public class Menu {
      *
      * @param winner the winner
      */
-    public static void endGame(Player winner) {
+    public static void endGame(Player winner, boolean is2Players) {
         // Tie
         if (winner == null) {
             System.out.println("""
@@ -29,6 +29,16 @@ public class Menu {
                     """);
             return;
         }
+        if (is2Players) {
+            twoPlayersEndGame(winner);
+        }
+        else {
+            singlePlayersEndGame(winner);
+        }
+
+    }
+
+    private static void twoPlayersEndGame(Player winner) {
         if (winner.getType().equals(Player.Type.X)) {
             System.out.println("""
                                          *             .''.
@@ -58,6 +68,36 @@ public class Menu {
         }
     }
 
+    private static void singlePlayersEndGame(Player winner) {
+        if (winner.isBot()) {
+            System.out.println("""
+                   /    , // ,,/ `.// ,/ ,//   /, // ,/, /, // ,/,   ,
+                    /, // ,/ ,// ,/ ,, ,/, /  ,/ /, //, /,/ //, ,, /,
+                     /` / //  ,/` ,/  / //, // ,/`/, //  //, /`,//,/ ,
+                      ,,  //,/,  /, `, // /, //, // , ,/, // ,//,  ,//
+                    ,/ ,/,, / /,/`  ,/  ' ,`,/, ///, //  / ' // , / ,/
+                     //  , /  ╦ ╦, ╦ /┌─┐┌─┐─┬─, , /` ,/' / // ,, / ,/
+                   ,/  .  ,// ║ ║ `║, │ │└─┐|│ `/ , '/ / / / ,  //,  ,
+                     /,/ / ,/ ╚─╝, ╚═╛└─┘└─┘ ╵ ` ///, / `  /`  ,   //
+                    / /,, /      `             ,/ /, . /  // ,//, / //,
+                    , / / //,               ,   / ,/,/, // ,/, //, , //
+                   """);
+        } else {
+            System.out.println("""
+                      *                                .''.
+                           .''.      .        *''*    :_\\/_:     .
+                          :_\\/_:   _\\(/_  .:.*_\\/_*   : /\\ :  .'.:.'.
+                      .''.: /\\ :   ./)\\   ':'* /\\ * :  '..'.  -=:o:=-
+                     :_\\/_:'.:::.    ' *''*    * '.\\'/.' _\\(/_'.':'.'
+                     : /\\ : :::::     *_\\/_*     -= o =-  /)\\    '  *
+                      '..'  ':::'     * /\\ *     .'/.\\'.   '
+                          *    ╦ ╦  ╦ ╦┌─┐┌┐╷ ┬    :
+                            *  ║ ║  ║║║│ ││││ │     \\
+                            *  ╚─╝  ╚╩╝└─┘╵└┘ o
+                    """);
+        }
+    }
+
     /**
      * Print the game-start panel
      *
@@ -71,20 +111,20 @@ public class Menu {
     /**
      * print the welcome message
      */
-    private static void welcomeMessage() {
+    public static void welcomeMessage() {
         System.out.println(
                 """
                         ╦ ╦┌─┐╦  ┌─┐┌─┐┌┬┐╔═╗ ┬
                         ║║║├┤ ║  │  │ ││││║╣  │
-                        ╚╩╝└─┘╚═╝└─┘└─┘┴ ┴╚═╝ o""");
-        System.out.println("--- Choose board size (enter a number between 3 and 10): ");
+                        ╚╩╝└─┘╚═╛└─┘└─┘┴ ┴╚═╝ o""");
     }
 
     /**
      * the board size choosing panel for the user
      * @return the user's choice
      */
-    private static int boardSizeConfig() {
+    public static int boardSizeConfig() {
+        System.out.println("--- Choose board size (enter a number between 3 and 10): ");
         Scanner scanner = new Scanner(System.in);
         try {
             int boardSize = scanner.nextInt();
@@ -98,6 +138,22 @@ public class Menu {
         }
         System.err.println("!!!!!!Invalid board size number. Using default board size 3!!!!!!");
         return 3;
+    }
+
+    public static int numPlayersConfig() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("--- Choose the number of player (1 or 2):");
+        try {
+            int numPlayer = scanner.nextInt();
+            if (numPlayer == 1 || numPlayer == 2) {
+                return numPlayer;
+            }
+        } catch (InputMismatchException e) {
+            System.err.println("!!!!!!Invalid number of players. Using default 1!!!!!!");
+            return 1;
+        }
+        System.err.println("!!!!!!Invalid number of players. Using default 1!!!!!!");
+        return 1;
     }
 
     /**
