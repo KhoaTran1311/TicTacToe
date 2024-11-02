@@ -82,8 +82,13 @@ public class State {
         return turnNumber;
     }
 
+    /**
+     * Gets if this is a max's turn,
+     * Max's turn is when it is the bot's turn
+     * @return true if it is max's turn
+     */
     public boolean getIsMax() {
-        return getPlayersTurn().getType().equals(Player.Type.X);
+        return getPlayersTurn().isBot();
     }
 
     /**
@@ -226,7 +231,7 @@ public class State {
     }
 
 //------------------------MINIMAX-------------------------
-    public List<StateChild> getChildren() {
+    public List<StateChild> getChildren(boolean switchedPlayer) {
         List<StateChild> stateChildren = new ArrayList<>();
 
         Player.Type[][] boardState = getBoard().getBoardState();
@@ -235,7 +240,7 @@ public class State {
             for (int j = 0; j < boardState[0].length; j++) {
                 if (boardState[i][j] == null) {
                     int[] action = new int[]{i, j};
-                    stateChildren.add(new StateChild(getNextState(action), action));
+                    stateChildren.add(new StateChild(getNextState(action, switchedPlayer), action));
                 }
             }
         }
@@ -243,20 +248,25 @@ public class State {
         return stateChildren;
     }
 
-    private State getNextState(int[] move) {
+    private State getNextState(int[] move, boolean switchedPlayer) {
         int nextTurnNumber = getTurnNumber() + 1;
 
         Player nextPlayer = null;
         for (Player player : getPlayers()) {
-            if (player.getType() == getPlayersTurn().getType()) {
-                nextPlayer = player;
+            if (switchedPlayer) {
+                if (player.getType() != getPlayersTurn().getType())
+                    nextPlayer = player;
+            } else {
+                if (player.getType() == getPlayersTurn().getType())
+                    nextPlayer = player;
             }
         }
+        assert nextPlayer != null;
 
         Player nextWinner = null;
         boolean nextIsFinished = isFinished();
         Board nextBoard = new Board(getBoard());
-        switch (nextBoard.move(move[0], move[1], getPlayersTurn().getType())) {
+        switch (nextBoard.move(move[0], move[1], nextPlayer.getType())) {
             case 0 ->
                 nextIsFinished = nextTurnNumber == nextBoard.getBoardSize();
 
@@ -280,19 +290,15 @@ public class State {
     }
 
     public double getUtility() {
-        if(this.utility != Double.NEGATIVE_INFINITY){
-            return this.utility;
-        }
         if (isFinished()) {
-            if (getWinner().getType().equals(Player.Type.X)) {
-                return 100;
+            if (getWinner() != null && getWinner().isBot()) {
+                this.utility = 100;
+            } else if (getWinner() == null) {
+                this.utility = 0;
+            } else {
+                this.utility = -100;
             }
-            if (getWinner() == null) {
-                return 0;
-            }
-            else {
-                return Double.NEGATIVE_INFINITY;
-            }
+            return this.utility;
         }
 
         double out = 0;
@@ -300,6 +306,7 @@ public class State {
         this.utility = out;
         return out;
     }
+
 
     public double getMinimax() {
         return minimax;

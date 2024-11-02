@@ -22,6 +22,8 @@ public class MinimaxAlphaBeta {
 
         if (depth >= numPlys || nodeState.isFinished()) {
             nodeState.setMinimax(nodeState.getUtility());
+            System.out.println(nodeState);
+            System.out.println(nodeState.getUtility());
             return node;
         }
 
@@ -30,7 +32,7 @@ public class MinimaxAlphaBeta {
         double bestValue = nodeState.getIsMax() ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
         StateChild bestValueState = null;
 
-        List<StateChild> children = orderChildrenWithHeuristics(nodeState.getChildren());
+        List<StateChild> children = orderChildrenWithHeuristics(nodeState.getChildren(depth != 0));
 
         for (StateChild child : children) {
             StateChild minimaxBackup = MinimaxRecursive(child, depth + 1, max, min);

@@ -53,7 +53,7 @@ public class Main {
 
         State state = new State(player, bot, boardConfig);
         BoardView.getView(state.getBoard());
-        MinimaxAlphaBeta minimaxAlphaBeta = new MinimaxAlphaBeta(3);
+        MinimaxAlphaBeta minimaxAlphaBeta = new MinimaxAlphaBeta(100000000);
 
         while (!state.isFinished()) {
             if (state.getPlayersTurn().equals(bot)) {
